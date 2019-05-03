@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Website>
+    <desc>Gaming Omen by HP 15-dc0018nq, Procesor Intel® Core™ i5-8300H pana la 4GHz, 15.6" Full HD, 8GB, 1TB, NVIDIA GeForce GTX 1050 Ti 4GB, Free Dos</desc>
+    <imageUrl>https://images.ua.prom.st/1601960705_w640_h640_igrovoj-noutbu-omen.jpg</imageUrl>
+    <name>Игровой ноутбу Omen by HP 15-dc0018nq, Intel® Core™ i5-8300H 4GHz, 15.6" Full HD, 8GB 1TB, NVIDIA GTX,1050TI 4</name>
+    <price>22999.0</price>
+    <specs>
+        <entry>
+            <key>Разрешение экрана</key>
+            <value>1920×1080</value>
+        </entry>
+        <entry>
+            <key>Модель процессора</key>
+            <value>8300H</value>
+        </entry>
+        <entry>
+            <key>Диагональ экрана</key>
+            <value>15.6 (дюйм)</value>
+        </entry>
+        <entry>
+            <key>Объем жесткого диска</key>
+            <value>1.0 (GB)</value>
+        </entry>
+        <entry>
+            <key>Количество интерфейсов USB 3.0</key>
+            <value>3</value>
+        </entry>
+        <entry>
+            <key>Производитель</key>
+            <value>HP</value>
+        </entry>
+        <entry>
+            <key>Тип аккумулятора</key>
+            <value>Li-Ion</value>
+        </entry>
+        <entry>
+            <key>Цвет</key>
+            <value>Черный</value>
+        </entry>
+        <entry>
+            <key>Количество интерфейсов USB 3.1 Type-C</key>
+            <value>1</value>
+        </entry>
+        <entry>
+            <key>Объем видеопамяти</key>
+            <value>4096 (MB)</value>
+        </entry>
+        <entry>
+            <key>Встроенный микрофон</key>
+            <value>Да</value>
+        </entry>
+        <entry>
+            <key>Интерфейсы</key>
+            <value>mini DisplayPort Аудио выход/Наушники</value>
+        </entry>
+        <entry>
+            <key>Состояние</key>
+            <value>Новое</value>
+        </entry>
+        <entry>
+            <key>Производитель графического чипсета</key>
+            <value>NVIDIA</value>
+        </entry>
+        <entry>
+            <key>Гарантийный срок</key>
+            <value>12 (мес)</value>
+        </entry>
+        <entry>
+            <key>Тип графического контроллера</key>
+            <value>Интегрированный и дискретный</value>
+        </entry>
+        <entry>
+            <key>Емкость аккумулятора</key>
+            <value>70.0 (мА/ч)</value>
+        </entry>
+        <entry>
+            <key>Количество ячеек батареи</key>
+            <value>4</value>
+        </entry>
+        <entry>
+            <key>Тип процессора</key>
+            <value>Core i5</value>
+        </entry>
+        <entry>
+            <key>Веб-камера</key>
+            <value>Да</value>
+        </entry>
+        <entry>
+            <key>Тип видеопамяти</key>
+            <value>GDDR5</value>
+        </entry>
+        <entry>
+            <key>Тип</key>
+            <value>Ноутбук</value>
+        </entry>
+        <entry>
+            <key>Дополнительный сервис</key>
+            <value>Настройка Сервисное обслуживание Установка приложений</value>
+        </entry>
+        <entry>
+            <key>Встроенный картридер</key>
+            <value>Да</value>
+        </entry>
+        <entry>
+            <key>Частота процессора</key>
+            <value>4.0 (МГц)</value>
+        </entry>
+        <entry>
+            <key>Объем оперативной памяти</key>
+            <value>8096 (MB)</value>
+        </entry>
+        <entry>
+            <key>Ультрабук</key>
+            <value>Нет</value>
+        </entry>
+    </specs>
+    <url>https://prom.ua/p895411456-igrovoj-noutbu-omen.html</url>
+</Website>
