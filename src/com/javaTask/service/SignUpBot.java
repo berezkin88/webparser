@@ -24,7 +24,7 @@ public class SignUpBot {
 		System.setProperty("webdriver.gecko.driver", DRIVER_PATH);
 
 		WebDriver driver = new FirefoxDriver();
-		
+
 		driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
 		driver.manage().timeouts().setScriptTimeout(45, TimeUnit.SECONDS);
 
@@ -43,37 +43,42 @@ public class SignUpBot {
 
 		WebElement registerBlock = driver.findElement(By.cssSelector("[data-qaid=\"reg_element\"]"));
 
-		//hover over the register block
+		// hover over the register block
 		action.moveToElement(registerBlock).perform();
-		
+
 		Timer.waitSeconds(3);
-		
+
 		WebElement registerLinkElement = driver.findElement(By.cssSelector("[data-qaid=\"reg_as_buyer_btn\"]"));
-		
+
 		String link = registerLinkElement.getAttribute("href");
-		
+
 		Timer.waitSeconds(3);
-		
+
 		driver.get(link);
 		Timer.waitSeconds(25);
-		
+
 		WebElement nameField = driver.findElement(By.cssSelector("[data-qaid=\"name\"]"));
 		WebElement emailField = driver.findElement(By.cssSelector("[data-qaid=\"email\"]"));
 		WebElement passwordlField = driver.findElement(By.cssSelector("[data-qaid=\"password\"]"));
 		WebElement submitElement = driver.findElement(By.cssSelector("[data-qaid=\"submit\"]"));
-		
+
 		nameField.sendKeys(user.getName());
 		emailField.sendKeys(user.getEmail());
 		passwordlField.sendKeys(user.getPassword());
-		
+
 		submitElement.submit();
 		String pageLink = driver.getCurrentUrl();
 		Timer.waitSeconds(6);
-		
+
 		driver.get(pageLink);
 
 		Timer.waitSeconds(10);
 
 		return driver;
 	}
+
+	public static String getDriverPath() {
+		return DRIVER_PATH;
+	}
+
 }
