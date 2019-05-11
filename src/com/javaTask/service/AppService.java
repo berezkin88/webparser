@@ -22,7 +22,7 @@ public class AppService {
 		log.info("Started writing to JSON");
 		try {
 			mapper.writeValue(new File(
-				System.getProperty("user.dir") + File.separator + "data" + File.separator + "website.json"), web);
+				System.getProperty("user.dir") + File.separator + "data" + File.separator + System.currentTimeMillis() + ".json"), web);
 		} catch (IOException e) {
 			throw new IOExc("Exception is thrown in writeToJSON() method");
 		}
@@ -35,7 +35,7 @@ public class AppService {
 			JAXBContext context = JAXBContext.newInstance(Website.class);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			marshaller.marshal(web, new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + "website.xml"));
+			marshaller.marshal(web, new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + System.currentTimeMillis() + ".xml"));
 			log.info("Finished writing to XML");
 		} catch (JAXBException e) {
 			throw new JAXBExc("Exception is thrown in writeToXML() method");

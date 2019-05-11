@@ -10,6 +10,9 @@ import com.javaTask.exceptions.IOExc;
 import com.javaTask.exceptions.JAXBExc;
 import com.javaTask.service.AppService;
 import com.javaTask.service.SignUpBot;
+import com.javaTask.service.UI;
+
+import javafx.application.Application;
 
 public class Runner {
 	
@@ -17,12 +20,12 @@ public class Runner {
 	public static final Logger LOG = Logger.getLogger(Runner.class.getName());
 	
 	public static void main(String[] args) {
-		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
-		SignUpBot sub = new SignUpBot();
+		Application.launch(UI.class, args);
 		
-		WebDriver web = sub.registerUser(user);
-		
-		web.quit();
+		//TODO 3 tabs
+		//TODO first for searching goods
+		//TODO second for signup functionality
+		//TODO third adding good to the basket after logging in and inserting good sku
 	}
 	
 	public static void jsoupFunc() {
@@ -34,5 +37,14 @@ public class Runner {
 		} catch (IOExc | JAXBExc e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void selenFunc() {
+		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
+		SignUpBot sub = new SignUpBot();
+		
+		WebDriver web = sub.registerUser(user);
+		
+		web.quit();
 	}
 }
