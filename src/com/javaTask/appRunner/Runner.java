@@ -8,7 +8,9 @@ import com.javaTask.entity.User;
 import com.javaTask.entity.Website;
 import com.javaTask.exceptions.IOExc;
 import com.javaTask.exceptions.JAXBExc;
+import com.javaTask.service.AddToBasket;
 import com.javaTask.service.AppService;
+import com.javaTask.service.LoginBot;
 import com.javaTask.service.SignUpBot;
 import com.javaTask.service.UI;
 
@@ -23,8 +25,6 @@ public class Runner {
 		Application.launch(UI.class, args);
 		
 		//TODO 3 tabs
-		//TODO first for searching goods
-		//TODO second for signup functionality
 		//TODO third adding good to the basket after logging in and inserting good sku
 	}
 	
@@ -44,6 +44,24 @@ public class Runner {
 		SignUpBot sub = new SignUpBot();
 		
 		WebDriver web = sub.registerUser(user);
+		
+		web.quit();
+	}
+	
+	public static void selenLoginFunc() {
+		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
+		LoginBot lb = new LoginBot();
+		
+		WebDriver web = lb.logInUser(user);
+		
+		web.quit();
+	}
+
+	public static void selenAddFunc() {
+		String link = "https://prom.ua/p895411456-igrovoj-noutbu-omen.html";
+		AddToBasket atb = new AddToBasket();
+		
+		WebDriver web = atb.addToCart(link, atb.getWebDriver());
 		
 		web.quit();
 	}
