@@ -195,13 +195,13 @@ public class UI extends Application {
 		return tab;
 	}
 
+	/*
+	 * The method is adding functionality for the Search button hit. It returns
+	 * error if there is no URL, Input field is empty, URL is not from Prom.ua or
+	 * URL contains spaces. For success operation it returns the success message and
+	 * adds the Save button
+	 */
 	private void searchButtonFunc() {
-		/*
-		 * The method is adding functionality for the Search button hit. It returns
-		 * error if there is no URL, Input field is empty, URL is not from Prom.ua or
-		 * URL contains spaces. For success operation it returns the success message and
-		 * adds the Save button
-		 */
 
 		String url = input.getText();
 
@@ -238,12 +238,12 @@ public class UI extends Application {
 		});
 	}
 
+	/*
+	 * The method purpose is to handle hitting Save button. The button saves parsed
+	 * URL results to JSON and XML files, named with a current System timestamp. If
+	 * error occurs it displays the exception message.
+	 */
 	private void saveBtnFunc() {
-		/*
-		 * The method purpose is to handle hitting Save button. The button saves parsed
-		 * URL results to JSON and XML files, named with a current System timestamp. If
-		 * error occurs it displays the exception message.
-		 */
 
 		try {
 			AppService.writeToJSON(web);
@@ -266,13 +266,13 @@ public class UI extends Application {
 		vboxSearch.getChildren().add(saved);
 	}
 
+	/*
+	 * The method purpose is the signup into Prom.ua service. It requires three
+	 * fields to be fulfilled: name, email and password. If one of the inputs failed
+	 * validation test the warning message would be shown. In the case of success a
+	 * new account would be created. Selenium runs in the fullscreen mode.
+	 */
 	private void signupBtnFunc(String name, String email, String pass) {
-		/*
-		 * The method purpose is the signup into Prom.ua service. It requires three
-		 * fields to be fulfilled: name, email and password. If one of the inputs failed
-		 * validation test the warning message would be shown. In the case of success a
-		 * new account would be created. Selenium runs in the fullscreen mode.
-		 */
 
 		User user = new User();
 		SignUpBot sub = new SignUpBot();
@@ -304,13 +304,13 @@ public class UI extends Application {
 		vboxSignup.getChildren().add(success);
 	}
 
+	/*
+	 * This method make a user login and add a product to the cart. It accepts
+	 * strings for email, password and product URL. Validate the input parameters,
+	 * and show warning message if any of the fields is incorrect or missing. In the
+	 * case of success it logs in the user and add a product to the basket.
+	 */
 	private void loginAndAdd(String email, String password, String url) {
-		/*
-		 * This method make a user login and add a product to the cart. It accepts
-		 * strings for email, password and product URL. Validate the input parameters,
-		 * and show warning message if any of the fields is incorrect or missing. In the
-		 * case of success it logs in the user and add a product to the basket.
-		 */
 
 		User user = new User();
 		String link = null;
@@ -347,45 +347,21 @@ public class UI extends Application {
 	}
 
 	private boolean validateEmail(String email) {
-		if (email == null)
-			return false;
-
-		if (email == "")
-			return false;
-
-		if (checkSpaces(email))
-			return false;
-
-		if (!email.contains("@"))
+		if (email == null || email.isEmpty() || checkSpaces(email) || !email.contains("@"))
 			return false;
 
 		return true;
 	}
 
 	private boolean validateStr(String str) {
-		if (str == null)
-			return false;
-
-		if (str == "")
-			return false;
-
-		if (checkSpaces(str))
+		if (str == null || str.isEmpty() || checkSpaces(str))
 			return false;
 
 		return true;
 	}
 
 	private boolean validateUrl(String url) {
-		if (url == null)
-			return false;
-
-		if (url == "")
-			return false;
-
-		if (checkSpaces(url))
-			return false;
-
-		if (!url.startsWith("https://prom.ua"))
+		if (url == null || url.isEmpty() || checkSpaces(url) || !url.contains("https://prom.ua"))
 			return false;
 
 		return true;

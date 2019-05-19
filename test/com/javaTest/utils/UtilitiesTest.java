@@ -1,4 +1,4 @@
-package com.javaTest.utilities;
+package com.javaTest.utils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
