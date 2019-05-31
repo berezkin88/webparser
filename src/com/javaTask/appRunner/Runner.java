@@ -1,5 +1,6 @@
 package com.javaTask.appRunner;
 
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ import com.javaTask.service.AppService;
 import com.javaTask.service.LoginBot;
 import com.javaTask.service.SignUpBot;
 import com.javaTask.service.UI;
+import com.javaTask.service.WebsiteService;
 
 import javafx.application.Application;
 
@@ -24,8 +26,6 @@ public class Runner {
 	public static void main(String[] args) {
 		Application.launch(UI.class, args);
 		
-		//TODO 3 tabs
-		//TODO third adding good to the basket after logging in and inserting good sku
 	}
 	
 	public static void jsoupFunc() {
@@ -64,5 +64,23 @@ public class Runner {
 		WebDriver web = atb.addToCart(link, atb.getWebDriver());
 		
 		web.quit();
+	}
+	
+	public static void getDataFromWebAndSaveToDB(String url) {
+		WebsiteService ws = new WebsiteService();
+		
+		Website web = AppService.collectData(url);
+		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
+		
+		web.setLogin(user.getName());
+		web.setPassword(user.getPassword());
+		web.setTimestamp(System.currentTimeMillis());
+		
+		try {
+			ws.insert(web);
+		} catch (SQLException e) {
+			LOG.info("Exception occured in getDataFromWebAndSaveToDB() method");
+			e.printStackTrace();
+		}
 	}
 }

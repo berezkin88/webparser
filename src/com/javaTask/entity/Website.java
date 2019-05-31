@@ -6,12 +6,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Website")
 public class Website {
+	private String login;
+	private String password;
 	private String url;
 	private String name;
 	private double price;
 	private String imageUrl;
 	private Map<String, String> specs;
 	private String desc;
+	private long timestamp;
 	
 	public Website(String url) {
 		this.url = url;
@@ -67,4 +70,30 @@ public class Website {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	
+	
 }

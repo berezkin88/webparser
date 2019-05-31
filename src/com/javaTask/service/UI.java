@@ -1,12 +1,31 @@
 package com.javaTask.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import com.javaTask.entity.User;
 import com.javaTask.entity.Website;
 import com.javaTask.exceptions.IOExc;
 import com.javaTask.exceptions.JAXBExc;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import com.riojavino.entity.Wine;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -19,6 +38,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -27,13 +47,15 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class UI extends Application {
+	private static final Logger LOG = Logger.getLogger(UI.class.getName());
+
 	private static final Insets MARGIN_LEFT = new Insets(0, 0, 0, 20.0);
 	private static final Insets MARGIN_TOP = new Insets(20.0, 0, 0, 0);
 	private static final Insets MARGIN_TOP_LEFT = new Insets(20.0, 0, 0, 20.0);
 	private static Website web = null;
 	private static Tab tab = null;
-	private static VBox vboxSearch, vboxSignup, vboxAdd = null;
-	private static TextField input, name, email, password = null;
+	private static VBox vboxSearch, vboxSignup, vboxAdd, vboxSave = null;
+	private static TextField input, name, email, password, inputUrl = null;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -41,7 +63,7 @@ public class UI extends Application {
 		TabPane tabPane = new TabPane();
 
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		tabPane.getTabs().addAll(searchTab(), signUpTab(), addToBasket());
+		tabPane.getTabs().addAll(searchTab(), signUpTab(), addToBasket(), saveToCSVTab());
 
 		Scene scene = new Scene(tabPane, 400, 500);
 
@@ -174,25 +196,152 @@ public class UI extends Application {
 		// description text
 		Text url = new Text("Insert product URL");
 		VBox.setMargin(url, MARGIN_TOP_LEFT);
-		
+
 		// input field for an URL
-		input = new TextField();
-		input.setPrefWidth(300.0);
-		VBox.setMargin(input, MARGIN_LEFT);
+		inputUrl = new TextField();
+		inputUrl.setMaxWidth(350.0);
+		VBox.setMargin(inputUrl, MARGIN_LEFT);
 
 		Button btn = new Button("Login & Add");
 		btn.setMaxSize(120.0, 30.0);
 		VBox.setMargin(btn, MARGIN_LEFT);
 
 		btn.setOnAction(a -> {
-			loginAndAdd(email.getText(), password.getText(), input.getText());
+			loginAndAdd(email.getText(), password.getText(), inputUrl.getText());
 		});
 
-		vboxAdd.getChildren().addAll(label, emailDesc, email, passDesc, password, url, input, btn);
+		vboxAdd.getChildren().addAll(label, emailDesc, email, passDesc, password, url, inputUrl, btn);
 
 		tab.setContent(vboxAdd);
 
 		return tab;
+	}
+
+	private Tab saveToCSVTab() {
+		Tab tab = new Tab("Find and Save products");
+		vboxSave = new VBox(5);
+		HBox hboxDateFrom = new HBox(10);
+		HBox hboxDateTill = new HBox(10);
+
+		// Calendar
+		Calendar date = new GregorianCalendar();
+
+		// set title
+		Label label = new Label("Find and Save records to CSV");
+		label.setAlignment(Pos.BASELINE_CENTER);
+		label.setMaxWidth(2160);
+		label.setFont(new Font("Times New Roman", 20));
+		VBox.setMargin(label, MARGIN_TOP);
+
+		// description text
+		Text fromDesc = new Text("Set the beginnign date");
+		VBox.setMargin(fromDesc, MARGIN_TOP_LEFT);
+
+		// input fields for beginning date
+		Text monthf = new Text("Month");
+		TextField monthFrom = new TextField(String.valueOf(date.get(Calendar.MONTH) + 1));
+		monthFrom.setMaxWidth(30.0);
+
+		Text dayf = new Text("Day");
+		TextField dayFrom = new TextField(String.valueOf(date.get(Calendar.DATE)));
+		dayFrom.setMaxWidth(30.0);
+
+		Text yearf = new Text("Year");
+		TextField yearFrom = new TextField(String.valueOf(date.get(Calendar.YEAR)));
+		yearFrom.setMaxWidth(50.0);
+
+		hboxDateFrom.getChildren().addAll(monthf, monthFrom, dayf, dayFrom, yearf, yearFrom);
+		VBox.setMargin(hboxDateFrom, MARGIN_LEFT);
+
+		// description text
+		Text tillDesc = new Text("Set the ending date");
+		VBox.setMargin(tillDesc, MARGIN_TOP_LEFT);
+
+		// input fields for ending date
+		Text montht = new Text("Month");
+		TextField monthTill = new TextField(String.valueOf(date.get(Calendar.MONTH) + 1));
+		monthTill.setMaxWidth(30.0);
+
+		Text dayt = new Text("Day");
+		TextField dayTill = new TextField(String.valueOf(date.get(Calendar.DATE)));
+		dayTill.setMaxWidth(30.0);
+
+		Text yeart = new Text("Year");
+		TextField yearTill = new TextField(String.valueOf(date.get(Calendar.YEAR)));
+		yearTill.setMaxWidth(50.0);
+
+		hboxDateTill.getChildren().addAll(montht, monthTill, dayt, dayTill, yeart, yearTill);
+		VBox.setMargin(hboxDateTill, MARGIN_LEFT);
+
+		Button btn = new Button("Find & Save");
+		btn.setMaxSize(120.0, 30.0);
+		VBox.setMargin(btn, MARGIN_TOP_LEFT);
+		
+		vboxSave.getChildren().addAll(label, fromDesc, hboxDateFrom, tillDesc, hboxDateTill, btn);
+		tab.setContent(vboxSave);
+
+		btn.setOnAction(e -> {
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+			String dateFrom = monthFrom.getText() + "/" +  dayFrom.getText()  + "/" + yearFrom.getText() + " 00:00:00";
+			LOG.info(dateFrom);
+			String dateTill = monthTill.getText() + "/" + dayTill.getText() + "/" + yearTill.getText() + " 23:59:59";
+			LOG.info(dateTill);
+			long dateF = 0l;
+			long dateT = 0l;
+
+			try {
+				dateF = sdf.parse(dateFrom).getTime();
+				LOG.info("Date from: " + dateF);
+				dateT = sdf.parse(dateTill).getTime();
+				LOG.info("Date till: " + dateT);
+			} catch (ParseException e1) {
+				LOG.info("An exception occured when converting date from string to long timestamp");
+				e1.printStackTrace();
+			}
+
+			if (findAndSaveFunc(dateF, dateT)) {
+				Text success = new Text("The results are saved to csv.");
+				success.setTextAlignment(TextAlignment.CENTER);
+				success.maxWidth(2160);
+				VBox.setMargin(success, MARGIN_LEFT);
+				
+				vboxSave.getChildren().add(success);
+			} else {
+				Text failure = new Text("Nothign was found.");
+				failure.setTextAlignment(TextAlignment.CENTER);
+				failure.maxWidth(2160);
+				failure.setFill(Color.RED);
+				VBox.setMargin(failure, MARGIN_LEFT);
+				
+				vboxSave.getChildren().add(failure);
+			}
+		});
+
+		return tab;
+	}
+
+	/*
+	 * The method is looking for the website data in the database, it saves results
+	 * to a csv if the search is successes and return TRUE.
+	 * It returns FALSE otherwise.
+	 */
+	private boolean findAndSaveFunc(long dateF, long dateT) {
+		WebsiteService ws = new WebsiteService();
+		List<Website> results = new ArrayList<>();
+
+		try {
+			results = ws.read(dateF, dateT);
+		} catch (SQLException e) {
+			LOG.info("Exception occured in findAndSaveFunc() method");
+			e.printStackTrace();
+		}
+
+		if (!results.isEmpty()) {
+			writeToCsv(results);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/*
@@ -343,6 +492,31 @@ public class UI extends Application {
 		VBox.setMargin(success, MARGIN_LEFT);
 
 		vboxAdd.getChildren().add(success);
+
+	}
+
+	private void writeToCsv(List<Website> results) {
+		LOG.info("In writeToCsv() method");
+
+		Writer writer;
+		try {
+			writer = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir") + File.separator + "data"
+					+ File.separator + System.currentTimeMillis() + ".csv"));
+
+			LOG.info("Writer started");
+			StatefulBeanToCsv<Website> beanToCsv = new StatefulBeanToCsvBuilder<Website>(writer)
+					.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).build();
+
+			LOG.info("CSV builder completed");
+
+			beanToCsv.write(results);
+			LOG.info("CSV completed");
+
+			writer.close();
+		} catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
+			LOG.info("Exception occured in writeToCsv() method");
+			e.printStackTrace();
+		}
 
 	}
 
