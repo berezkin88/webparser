@@ -1,4 +1,4 @@
-package com.javaTask.service;
+package com.javaTask.view;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,12 +20,16 @@ import com.javaTask.entity.User;
 import com.javaTask.entity.Website;
 import com.javaTask.exceptions.IOExc;
 import com.javaTask.exceptions.JAXBExc;
+import com.javaTask.service.bots.AddToBasketBot;
+import com.javaTask.service.AppService;
+import com.javaTask.service.bots.LoginAndSignupBot;
+import com.javaTask.service.WebsiteService;
+import com.javaTask.service.WebsiteServiceImpl;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import com.riojavino.entity.Wine;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -326,7 +330,7 @@ public class UI extends Application {
 	 * It returns FALSE otherwise.
 	 */
 	private boolean findAndSaveFunc(long dateF, long dateT) {
-		WebsiteService ws = new WebsiteService();
+		WebsiteService ws = new WebsiteServiceImpl();
 		List<Website> results = new ArrayList<>();
 
 		try {
@@ -419,12 +423,12 @@ public class UI extends Application {
 	 * The method purpose is the signup into Prom.ua service. It requires three
 	 * fields to be fulfilled: name, email and password. If one of the inputs failed
 	 * validation test the warning message would be shown. In the case of success a
-	 * new account would be created. Selenium runs in the fullscreen mode.
+	 * new account would be created. Selenium runs in the silent mode.
 	 */
 	private void signupBtnFunc(String name, String email, String pass) {
 
 		User user = new User();
-		SignUpBot sub = new SignUpBot();
+		LoginAndSignupBot lsb = new LoginAndSignupBot();
 
 		if (validateStr(name) && validateEmail(email) && validateStr(pass)) {
 			user.setName(name);
@@ -443,7 +447,7 @@ public class UI extends Application {
 			return;
 		}
 
-		WebDriver web = sub.registerUser(user);
+		WebDriver web = lsb.registerUser(user);
 
 		Text success = new Text("You successfully signed up!");
 		success.setTextAlignment(TextAlignment.CENTER);
@@ -463,8 +467,8 @@ public class UI extends Application {
 
 		User user = new User();
 		String link = null;
-		LoginBot lb = new LoginBot();
-		AddToBasket atb = new AddToBasket();
+		LoginAndSignupBot lsb = new LoginAndSignupBot();
+		AddToBasketBot atbb = new AddToBasketBot();
 
 		if (validateEmail(email) && validateStr(password) && validateUrl(url)) {
 			user.setEmail(email);
@@ -483,8 +487,8 @@ public class UI extends Application {
 			return;
 		}
 
-		WebDriver web = lb.logInUser(user);
-		web = atb.addToCart(url, lb.getWebDriver());
+		WebDriver web = lsb.logInUser(user);
+		web = atbb.addToCart(link, lsb.getWebDriver());
 
 		Text success = new Text("Operations were performed successfully");
 		success.setTextAlignment(TextAlignment.CENTER);

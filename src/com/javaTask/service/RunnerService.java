@@ -1,4 +1,4 @@
-package com.javaTask.appRunner;
+package com.javaTask.service;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -9,24 +9,13 @@ import com.javaTask.entity.User;
 import com.javaTask.entity.Website;
 import com.javaTask.exceptions.IOExc;
 import com.javaTask.exceptions.JAXBExc;
-import com.javaTask.service.AddToBasket;
-import com.javaTask.service.AppService;
-import com.javaTask.service.LoginBot;
-import com.javaTask.service.SignUpBot;
-import com.javaTask.service.UI;
-import com.javaTask.service.WebsiteService;
+import com.javaTask.service.bots.AddToBasketBot;
+import com.javaTask.service.bots.LoginAndSignupBot;
 
-import javafx.application.Application;
-
-public class Runner {
-	
+public class RunnerService {
 	public static final String PRODUCT_URL = "https://prom.ua/p895411456-igrovoj-noutbu-omen.html";
-	public static final Logger LOG = Logger.getLogger(Runner.class.getName());
-	
-	public static void main(String[] args) {
-		Application.launch(UI.class, args);
-		
-	}
+	public static final User USER = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
+	public static final Logger LOG = Logger.getLogger(RunnerService.class.getName());
 	
 	public static void jsoupFunc() {
 		Website web = AppService.collectData(PRODUCT_URL);
@@ -40,34 +29,32 @@ public class Runner {
 	}
 	
 	public static void selenFunc() {
-		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
-		SignUpBot sub = new SignUpBot();
+		LoginAndSignupBot lsb = new LoginAndSignupBot();
 		
-		WebDriver web = sub.registerUser(user);
+		WebDriver web = lsb.registerUser(USER);
 		
 		web.quit();
 	}
 	
 	public static void selenLoginFunc() {
-		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");
-		LoginBot lb = new LoginBot();
+		LoginAndSignupBot lsb = new LoginAndSignupBot();
 		
-		WebDriver web = lb.logInUser(user);
+		WebDriver web = lsb.logInUser(USER);
 		
 		web.quit();
 	}
 
 	public static void selenAddFunc() {
 		String link = "https://prom.ua/p895411456-igrovoj-noutbu-omen.html";
-		AddToBasket atb = new AddToBasket();
+		AddToBasketBot atbb = new AddToBasketBot();
 		
-		WebDriver web = atb.addToCart(link, atb.getWebDriver());
+		WebDriver web = atbb.addToCart(link, atbb.getWebDriver());
 		
 		web.quit();
 	}
 	
 	public static void getDataFromWebAndSaveToDB(String url) {
-		WebsiteService ws = new WebsiteService();
+		WebsiteService ws = new WebsiteServiceImpl();
 		
 		Website web = AppService.collectData(url);
 		User user = new User("Oleksandr", "berezkin88@ukr.net", "Test1234");

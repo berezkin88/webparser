@@ -1,4 +1,4 @@
-package com.javaTask.service;
+package com.javaTask.service.bots;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -10,9 +10,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class AddToBasket {
+import com.javaTask.utils.Timer;
 
-	private static final Logger LOG = Logger.getLogger(AddToBasket.class.getName());
+public class AddToBasketBot {
+
+	private static final Logger LOG = Logger.getLogger(AddToBasketBot.class.getName());
 
 	private static final String SEPARATOR = File.separator;
 	private static final String USER_DIR = System.getProperty("user.dir");
@@ -29,7 +31,6 @@ public class AddToBasket {
 		options.setHeadless(true);
 		// somehow this driver constructor is marked as depricated on my end??
 		WebDriver driver = new FirefoxDriver(options);
-//		WebDriver driver = new FirefoxDriver();
 
 		driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
 		driver.manage().timeouts().setScriptTimeout(45, TimeUnit.SECONDS);
